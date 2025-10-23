@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
-
-const URL= 'https://657499a5b2fbb8f6509c68b4.mockapi.io/api/all/Articles'
-function ListProducts() {
+import './List-Product.css'
+import { Link } from "react-router-dom";
+const URL= 'https://fakestoreapi.com/products'
+function ListProducts({onAddToCart}) {
     const [products, setProducts] = useState([]);
     const [load, setLoad] = useState(true);
   const [error, setError] = useState(null);
@@ -26,17 +27,24 @@ if(load) return <h2>Cargando...</h2>
 if(error) return <h2>Error... {error}</h2>
 
     return (
-        <div>
-            <h2>Lista de productos</h2>
-            {products.map(product => (
-                <div key={product.id} style={{border: '1px solid #ccc', margin: '10px', padding: '10px'}}>
-                    <h3>{product.name}</h3>
-                    <img src={product.img} alt={product.name} style={{width: '100px'}}/>
-                    <p>Precio: ${product.price}</p>
-                    <p>{product.details}</p>
-                </div>
-            ))}
+    <div>
+    <h2>Lista de productos</h2>
+    <div className="products-wrapper">
+      {products.map(product => (
+        <div key={product.id} className="product-container">
+          <Link to={`/product/${product.id}`}>
+          
+          <img src={product.image} alt={product.title} className="product-image" />
+          </Link>
+          <p className="product-price">Precio: ${product.price}</p>
+          <p className="product-description">{product.description}</p>
+            <button onClick={() => onAddToCart(product)} className="add-to-cart">
+            Agregar al carrito
+          </button>
         </div>
+      ))}
+    </div>
+  </div>
     )
 }
 
